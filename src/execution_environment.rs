@@ -1,7 +1,4 @@
-use crate::{
-    cpu::Cpu,
-    mmio::{MemoryMapping, SystemInterface},
-};
+use crate::{cpu::Cpu, mmio::SystemInterface};
 
 pub struct ExecutionEnvironment {
     _cpu: Cpu,
@@ -9,10 +6,15 @@ pub struct ExecutionEnvironment {
 }
 
 impl ExecutionEnvironment {
-    pub fn new(cpu: Cpu, mappings: Vec<MemoryMapping>) -> Self {
+    pub fn new(cpu: Cpu, bus: SystemInterface) -> Self {
         ExecutionEnvironment {
             _cpu: cpu,
-            _bus: SystemInterface { mappings },
+            _bus: bus,
         }
+    }
+
+    /// Executes a single CPU cycle.
+    pub fn cycle(&mut self) {
+        todo!();
     }
 }

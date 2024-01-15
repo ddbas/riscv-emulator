@@ -7,7 +7,7 @@ pub struct MemoryMapping {
 }
 
 pub struct SystemInterface {
-    pub memory_mappings: Vec<MemoryMapping>,
+    pub mappings: Vec<MemoryMapping>,
 }
 
 impl MMIODevice for SystemInterface {

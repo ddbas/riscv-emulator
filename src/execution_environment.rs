@@ -1,20 +1,18 @@
 use crate::{cpu::Cpu, mmio::SystemInterface};
 
 pub struct ExecutionEnvironment {
-    _cpu: Cpu,
-    _bus: SystemInterface,
+    cpu: Cpu,
+    bus: SystemInterface,
 }
 
 impl ExecutionEnvironment {
     pub fn new(cpu: Cpu, bus: SystemInterface) -> Self {
-        ExecutionEnvironment {
-            _cpu: cpu,
-            _bus: bus,
-        }
+        ExecutionEnvironment { cpu, bus }
     }
 
     /// Executes a single CPU cycle.
     pub fn cycle(&mut self) {
-        todo!();
+        self.cpu.fetch(&self.bus);
+        self.cpu.execute(&mut self.bus);
     }
 }

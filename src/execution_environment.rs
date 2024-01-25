@@ -12,7 +12,6 @@ impl ExecutionEnvironment {
 
     /// Executes a single CPU cycle.
     pub fn cycle(&mut self) {
-        self.cpu.fetch(&self.bus);
         self.cpu.execute(&mut self.bus);
     }
 }

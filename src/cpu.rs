@@ -1,7 +1,6 @@
 use crate::{device::MMIODevice, mmio::SystemInterface};
 
 pub struct Cpu {
-    next_instruction: Option<u32>,
     /// x0     -> zero register
     /// x1-x31 -> general purpose registers
     /// pc     -> program counter
@@ -11,17 +10,21 @@ pub struct Cpu {
 impl Cpu {
     pub fn new() -> Self {
         Cpu {
-            next_instruction: None,
             registers: [0; 33],
         }
     }
 
-    pub fn fetch(&mut self, bus: &SystemInterface) {
+    fn fetch(&mut self, bus: &SystemInterface) -> u32 {
         let pc = self.registers[32];
-        self.next_instruction = Some(bus.read(pc as usize));
+        println!("Fetch: {:08x}", pc);
+        let value = bus.read(pc as usize);
+        self.registers[32] = pc + 4;
+        value
     }
 
-    pub fn execute(&mut self, _bus: &mut SystemInterface) {
+    pub fn execute(&mut self, bus: &mut SystemInterface) {
+        let instruction = self.fetch(bus);
+        println!("Execute instruction: {:08x}", instruction);
         todo!();
     }
 }

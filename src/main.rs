@@ -12,7 +12,9 @@ fn main() {
     let mut rom = Rom::new(rom_size);
     rom.load(vec![
         // 0b00000000_00010000_00000000_10010011 ADDI
-        0b00000000, 0b00010000, 0b00000000, 0b10010011,
+        0b00000000, 0b00010000, 0b00000000, 0b10010011, // ADDI 1, x0, x1
+        0b00000000, 0b00010000, 0b10000000, 0b10010011, // ADDI 1, x1, x1
+        0b00000000, 0b00010000, 0b10000000, 0b10010011, // ADDI 1, x1, x1
     ]);
     let ram = Ram::new(ram_size);
     let bus = SystemInterface {
@@ -31,5 +33,11 @@ fn main() {
         ],
     };
     let mut execution_environment = ExecutionEnvironment::new(Cpu::new(), bus);
+    println!("{}", execution_environment);
     execution_environment.cycle();
+    println!("{}", execution_environment);
+    execution_environment.cycle();
+    println!("{}", execution_environment);
+    execution_environment.cycle();
+    println!("{}", execution_environment);
 }

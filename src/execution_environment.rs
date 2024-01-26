@@ -1,3 +1,5 @@
+use std::fmt;
+
 use crate::{cpu::Cpu, mmio::SystemInterface};
 
 pub struct ExecutionEnvironment {
@@ -12,6 +14,13 @@ impl ExecutionEnvironment {
 
     /// Executes a single CPU cycle.
     pub fn cycle(&mut self) {
-        self.cpu.execute(&mut self.bus);
+        self.cpu.cycle(&mut self.bus);
+    }
+}
+
+impl fmt::Display for ExecutionEnvironment {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.cpu)?;
+        Ok(())
     }
 }

@@ -1,4 +1,4 @@
-use crate::{device::MMIODevice, mmio::SystemInterface};
+use crate::{device::MMIODevice, mmio::SystemInterface, instruction::decode};
 
 pub struct Cpu {
     /// x0     -> zero register
@@ -9,9 +9,14 @@ pub struct Cpu {
 
 impl Cpu {
     pub fn new() -> Self {
-        Cpu {
-            registers: [0; 33],
-        }
+        Cpu { registers: [0; 33] }
+    }
+
+    pub fn execute(&mut self, bus: &mut SystemInterface) {
+        let encoded_instruction = self.fetch(bus);
+        let instruction = decode(encoded_instruction);
+        println!("Execute instruction: {:?}", instruction);
+        todo!();
     }
 
     fn fetch(&mut self, bus: &SystemInterface) -> u32 {
@@ -20,11 +25,5 @@ impl Cpu {
         let value = bus.read(pc as usize);
         self.registers[32] = pc + 4;
         value
-    }
-
-    pub fn execute(&mut self, bus: &mut SystemInterface) {
-        let instruction = self.fetch(bus);
-        println!("Execute instruction: {:08x}", instruction);
-        todo!();
     }
 }

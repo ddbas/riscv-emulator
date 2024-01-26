@@ -9,7 +9,11 @@ fn main() {
     let rom_size = 1024 * 1024; // 1MB
     let ram_size = 1024 * 1024; // 1MB
 
-    let rom = Rom::new(rom_size);
+    let mut rom = Rom::new(rom_size);
+    rom.load(vec![
+        // 0b00000000_00010000_00000000_10010011 ADDI
+        0b00000000, 0b00010000, 0b00000000, 0b10010011,
+    ]);
     let ram = Ram::new(ram_size);
     let bus = SystemInterface {
         size: 2_usize.pow(32),

@@ -11,8 +11,14 @@ impl Rom {
     }
 
     /// Pre-loads data into the ROM device.
-    pub fn load(&mut self /* data */) {
-        todo!()
+    pub fn load(&mut self, data: Vec<u8>) {
+        for (index, value) in data.iter().enumerate() {
+            if index < self.rom.capacity() {
+                self.rom[index] = *value;
+            } else {
+                break;
+            }
+        }
     }
 }
 

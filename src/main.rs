@@ -11,7 +11,6 @@ fn main() {
 
     let mut rom = Rom::new(rom_size);
     rom.load(vec![
-        // 0b00000000_00010000_00000000_10010011 ADDI
         0b00000000, 0b00010000, 0b00000000, 0b10010011, // ADDI 1, x0, x1
         0b00000000, 0b00010000, 0b10000000, 0b10010011, // ADDI 1, x1, x1
         0b00000000, 0b00010000, 0b10000000, 0b10010011, // ADDI 1, x1, x1
@@ -23,16 +22,16 @@ fn main() {
             MemoryMapping {
                 device: Box::new(rom),
                 start: 0x00000000,
-                end: 0x00000000 + rom_size - 1,
+                end: rom_size - 1,
             },
             MemoryMapping {
                 device: Box::new(ram),
-                start: 0x00000000 + rom_size,
-                end: 0x00000000 + rom_size + ram_size - 1,
+                start: rom_size,
+                end: rom_size + ram_size - 1,
             },
         ],
     };
-    let mut execution_environment = ExecutionEnvironment::new(Cpu::new(), bus);
+    let mut execution_environment = ExecutionEnvironment::new(Cpu::default(), bus);
     println!("{}", execution_environment);
     execution_environment.cycle();
     println!("{}", execution_environment);

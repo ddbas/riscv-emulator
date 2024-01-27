@@ -20,7 +20,6 @@ impl ExecutionEnvironment {
 
 impl fmt::Display for ExecutionEnvironment {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.cpu)?;
-        Ok(())
+        write!(f, "{}", self.cpu)
     }
 }

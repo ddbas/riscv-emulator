@@ -1,3 +1,5 @@
+use core::fmt;
+
 #[derive(Debug)]
 pub enum Instruction {
     I {
@@ -13,12 +15,16 @@ pub enum IKind {
     ADDI,
 }
 
-pub fn decode(encoded_instruction: u32) -> Result<Instruction, ()> {
+pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstruction> {
     if encoded_instruction & 0x7F == 0b0010011 {
         let opcode = (encoded_instruction >> 12) as u8 & 0x07;
         let kind = match opcode {
             0 => IKind::ADDI,
-            _ => return Err(()),
+            _ => {
+                return Err(InvalidInstruction {
+                    instruction: encoded_instruction,
+                })
+            }
         };
         return Ok(Instruction::I {
             kind,
@@ -28,5 +34,20 @@ pub fn decode(encoded_instruction: u32) -> Result<Instruction, ()> {
         });
     }
 
-    Err(())
+    Err(InvalidInstruction {
+        instruction: encoded_instruction,
+    })
 }
+
+#[derive(Debug)]
+pub struct InvalidInstruction {
+    instruction: u32,
+}
+
+impl fmt::Display for InvalidInstruction {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Invalid instruction: {:#032b}", self.instruction)
+    }
+}
+
+impl std::error::Error for InvalidInstruction {}

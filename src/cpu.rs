@@ -20,10 +20,7 @@ impl Cpu {
 
     pub fn cycle(&mut self, bus: &mut SystemInterface) {
         let encoded_instruction = self.fetch(bus);
-        let instruction = decode(encoded_instruction).expect(&format!(
-            "Invalid instruction: {:#032b}",
-            encoded_instruction
-        ));
+        let instruction = decode(encoded_instruction).unwrap_or_else(|err| panic!("Err: {}", err));
         self.execute(instruction, bus);
     }
 
@@ -51,6 +48,12 @@ impl Cpu {
     }
 }
 
+impl Default for Cpu {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl fmt::Display for Cpu {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for (index, value) in self.registers.iter().enumerate() {
@@ -65,7 +68,7 @@ impl fmt::Display for Cpu {
             }
 
             if index % 4 == 3 {
-                write!(f, "\n")?;
+                writeln!(f)?;
             } else {
                 write!(f, " ")?;
             }

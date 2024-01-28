@@ -52,6 +52,10 @@ impl Cpu {
             },
         }
     }
+
+    pub fn inspect_register(&self, register: u8) -> i32 {
+        self.registers[register as usize]
+    }
 }
 
 impl Default for Cpu {

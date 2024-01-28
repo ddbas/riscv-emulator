@@ -16,6 +16,10 @@ impl ExecutionEnvironment {
     pub fn cycle(&mut self) {
         self.cpu.cycle(&mut self.bus);
     }
+
+    pub fn inspect_register(&self, register: u8) -> i32 {
+        self.cpu.inspect_register(register)
+    }
 }
 
 impl fmt::Display for ExecutionEnvironment {

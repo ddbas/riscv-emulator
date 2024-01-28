@@ -4,7 +4,7 @@ use core::fmt;
 pub enum Instruction {
     I {
         kind: IKind,
-        immediate: u16,
+        immediate: i16,
         source: u8,
         destination: u8,
     },
@@ -28,7 +28,7 @@ pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstructio
         };
         return Ok(Instruction::I {
             kind,
-            immediate: (encoded_instruction >> 20) as u16,
+            immediate: (encoded_instruction >> 20) as i16,
             source: (encoded_instruction >> 15) as u8 & 0x1f,
             destination: (encoded_instruction >> 7) as u8 & 0x1f,
         });

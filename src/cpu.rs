@@ -51,6 +51,14 @@ impl Cpu {
                             0
                         };
                 }
+                instruction::IKind::SLTIU => {
+                    self.registers[destination as usize] =
+                        if (self.registers[source as usize] as u32) < (immediate as u32) {
+                            1
+                        } else {
+                            0
+                        };
+                }
             },
         }
     }

@@ -14,6 +14,7 @@ pub enum Instruction {
 pub enum IKind {
     ADDI,
     SLTI,
+    SLTIU,
 }
 
 pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstruction> {
@@ -22,6 +23,7 @@ pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstructio
         let kind = match opcode {
             0b000_u8 => IKind::ADDI,
             0b010_u8 => IKind::SLTI,
+            0b011_u8 => IKind::SLTIU,
             _ => {
                 return Err(InvalidInstruction {
                     instruction: encoded_instruction,

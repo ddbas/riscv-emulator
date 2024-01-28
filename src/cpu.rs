@@ -40,10 +40,12 @@ impl Cpu {
                 destination,
             } => match kind {
                 instruction::IKind::ADDI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
                     self.registers[destination as usize] =
                         self.registers[source as usize].wrapping_add(immediate);
                 }
                 instruction::IKind::SLTI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
                     self.registers[destination as usize] =
                         if self.registers[source as usize] < immediate {
                             1
@@ -52,12 +54,18 @@ impl Cpu {
                         };
                 }
                 instruction::IKind::SLTIU => {
+                    let immediate = (immediate as i32) << 20 >> 20;
                     self.registers[destination as usize] =
                         if (self.registers[source as usize] as u32) < (immediate as u32) {
                             1
                         } else {
                             0
                         };
+                }
+                instruction::IKind::ANDI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
+                    self.registers[destination as usize] =
+                        self.registers[source as usize] & immediate;
                 }
             },
         }

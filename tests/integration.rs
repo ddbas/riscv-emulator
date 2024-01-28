@@ -111,3 +111,34 @@ fn sltiu() {
         "x3 contains 0"
     );
 }
+
+#[test]
+fn andi() {
+    // Arrange
+    let rom_size = 8;
+    let mut rom = Rom::new(rom_size);
+    rom.load(vec![
+        0b00000000, 0b00100000, 0b10000000, 0b10010011, // ADDI x1, x1, 2
+        0b00000000, 0b00110000, 0b11110001, 0b00010011, // ANDI x2, x1, 3
+    ]);
+    let bus = SystemInterface {
+        size: 8,
+        mappings: vec![MemoryMapping {
+            device: Box::new(rom),
+            start: 0x00000000,
+            end: rom_size - 1,
+        }],
+    };
+    let mut execution_environment = ExecutionEnvironment::new(Cpu::default(), bus);
+
+    // Act
+    execution_environment.cycle();
+    execution_environment.cycle();
+
+    // Assert
+    assert_eq!(
+        2,
+        execution_environment.inspect_register(2),
+        "x2 contains 2"
+    );
+}

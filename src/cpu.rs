@@ -40,14 +40,16 @@ impl Cpu {
                 destination,
             } => match kind {
                 instruction::IKind::ADDI => {
-                    // Note: << 20 >> 20 ensures that the sign is extended across the 20 most
-                    // significant bits of i32.
-                    // E.g.,
-                    // "100000000001" => -2047 in 12 bits
-                    // 0b00001000_00000001 => "as i16"
-                    // 0b11111111_11111111_11111000_00000001 => i16 << 20 >> 20 => -2047 in 32 bits
-                    self.registers[destination as usize] = self.registers[source as usize]
-                        .wrapping_add((immediate as i32) << 20 >> 20);
+                    self.registers[destination as usize] =
+                        self.registers[source as usize].wrapping_add(immediate);
+                }
+                instruction::IKind::SLTI => {
+                    self.registers[destination as usize] =
+                        if self.registers[source as usize] < immediate {
+                            1
+                        } else {
+                            0
+                        };
                 }
             },
         }

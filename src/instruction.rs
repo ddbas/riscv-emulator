@@ -17,6 +17,7 @@ pub enum IKind {
     ORI,
     SLTI,
     SLTIU,
+    XORI,
 }
 
 pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstruction> {
@@ -26,6 +27,7 @@ pub fn decode(encoded_instruction: u32) -> Result<Instruction, InvalidInstructio
             0b000_u8 => IKind::ADDI,
             0b010_u8 => IKind::SLTI,
             0b011_u8 => IKind::SLTIU,
+            0b100_u8 => IKind::XORI,
             0b110_u8 => IKind::ORI,
             0b111_u8 => IKind::ANDI,
             _ => {

@@ -44,6 +44,16 @@ impl Cpu {
                     self.registers[destination as usize] =
                         self.registers[source as usize].wrapping_add(immediate);
                 }
+                instruction::IKind::ANDI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
+                    self.registers[destination as usize] =
+                        self.registers[source as usize] & immediate;
+                }
+                instruction::IKind::ORI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
+                    self.registers[destination as usize] =
+                        self.registers[source as usize] | immediate;
+                }
                 instruction::IKind::SLTI => {
                     let immediate = (immediate as i32) << 20 >> 20;
                     self.registers[destination as usize] =
@@ -62,15 +72,11 @@ impl Cpu {
                             0
                         };
                 }
-                instruction::IKind::ANDI => {
+                instruction::IKind::XORI => {
+                    println!("XORI r{} r{} {}", destination, source, immediate);
                     let immediate = (immediate as i32) << 20 >> 20;
                     self.registers[destination as usize] =
-                        self.registers[source as usize] & immediate;
-                }
-                instruction::IKind::ORI => {
-                    let immediate = (immediate as i32) << 20 >> 20;
-                    self.registers[destination as usize] =
-                        self.registers[source as usize] | immediate;
+                        self.registers[source as usize] ^ immediate;
                 }
             },
         }

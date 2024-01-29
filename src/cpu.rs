@@ -67,6 +67,11 @@ impl Cpu {
                     self.registers[destination as usize] =
                         self.registers[source as usize] & immediate;
                 }
+                instruction::IKind::ORI => {
+                    let immediate = (immediate as i32) << 20 >> 20;
+                    self.registers[destination as usize] =
+                        self.registers[source as usize] | immediate;
+                }
             },
         }
     }
